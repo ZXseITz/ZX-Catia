@@ -1,12 +1,101 @@
-﻿<Window x:Class="EditProperties.MainWindow"
+﻿<Window x:Name="MFrame" x:Class="EditProperties.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EditProperties"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="Edit properties" Height="365" Width="433" Loaded="Window_Loaded">
+    <Window.Resources>
+        <local:PropertiesProductCollection x:Key="ressource"/>
+    </Window.Resources>
     <Grid>
-        
+        <TabControl x:Name="TabControl" Margin="0,0,0,0" FontSize="11" FontFamily="Verdana" HorizontalContentAlignment="Left" VerticalContentAlignment="Top">
+            <TabItem Header="Main">
+                <Grid Background="#FFE5E5E5" Margin="0">
+                    <Label Content="Part number" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.504,0.506" Height="24" FontSize="11"/>
+                    <Label Content="Project" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.504,0.506" Margin="0,24,0,0" Height="24" FontSize="11"/>
+                    <Label Content="Assembly" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.504,0.506" Margin="0,48,0,0" Height="24" FontSize="11"/>
+                    <Label Content="Description" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.504,0.506" Margin="0,72,0,0" Height="24" FontSize="11"/>
+                    <Label Content="Revision" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.504,0.506" Margin="0,96,0,0" Height="24" FontSize="11"/>
+                    <TextBox x:Name="TbPartNum" HorizontalAlignment="Left" Height="18" Margin="84,4,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+                    <TextBox x:Name="TbProject" HorizontalAlignment="Left" Height="18" Margin="84,28,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+                    <TextBox x:Name="TbAssem" HorizontalAlignment="Left" Height="18" Margin="84,52,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+                    <TextBox x:Name="TbDesc" HorizontalAlignment="Left" Height="18" Margin="84,76,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+                    <ComboBox x:Name="CbRev" HorizontalAlignment="Left" Margin="84,99,0,0" VerticalAlignment="Top" Width="50">
+                        <ComboBoxItem Content="" HorizontalAlignment="Left" Width="118"/>
+                        <ComboBoxItem Content="A" HorizontalAlignment="Left" Width="118"/>
+                        <ComboBoxItem Content="B" HorizontalAlignment="Left" Width="118"/>
+                        <ComboBoxItem Content="C" HorizontalAlignment="Left" Width="118"/>
+                        <ComboBoxItem Content="D" HorizontalAlignment="Left" Width="118"/>
+                        <ComboBoxItem Content="E" HorizontalAlignment="Left" Width="118"/>
+                        <ComboBoxItem Content="F" HorizontalAlignment="Left" Width="118"/>
+                        <ComboBoxItem Content="G" HorizontalAlignment="Left" Width="118"/>
+                        <ComboBoxItem Content="H" HorizontalAlignment="Left" Width="118"/>
+                    </ComboBox>
+                    <GroupBox Header="Import" HorizontalAlignment="Left" Margin="0,130,0,0" VerticalAlignment="Top" Height="148" Width="204">
+                        <Canvas Margin="0">
+                            <ListBox x:Name="LbImport" Height="82" VerticalAlignment="Top" HorizontalAlignment="Left" Width="194">
+                                <CheckBox Name="ChBImportProject" Content="Project" VerticalAlignment="Center"/>
+                                <CheckBox Name="ChBImportAssem" Content="Assembly" VerticalAlignment="Center"/>
+                                <CheckBox Name="ChBImportDesc" Content="Description" VerticalAlignment="Center"/>
+                                <CheckBox Name="ChBImportRev" Content="Revision" VerticalAlignment="Center"/>
+                            </ListBox>
+                            <Button x:Name="BImportCat" Content="Import from CATIA" HorizontalAlignment="Left" VerticalAlignment="Top" Width="194" Canvas.Top="87" Click="BImportCat_Click"/>
+                            <Button x:Name="BImportFile" Content="Import from file" HorizontalAlignment="Left" VerticalAlignment="Top" Width="194" Canvas.Top="109" Click="BImportFile_Click"/>
+                        </Canvas>
+                    </GroupBox>
+                    <GroupBox Header="Saving" HorizontalAlignment="Left" Margin="209,27,0,0" VerticalAlignment="Top" Height="103" Width="204">
+                        <Canvas Margin="0">
+                            <ListBox Height="82" VerticalAlignment="Top" HorizontalAlignment="Left" Width="192">
+                                <CheckBox Name="ChBSaveProject" Content="Project" VerticalAlignment="Center"/>
+                                <CheckBox Name="ChBSaveAssem" Content="Assembly" VerticalAlignment="Center"/>
+                                <CheckBox Name="ChBSaveDesc" Content="Description" VerticalAlignment="Center"/>
+                                <CheckBox Name="ChBSaveRev" Content="Revision" VerticalAlignment="Center"/>
+                            </ListBox>
+                        </Canvas>
+                    </GroupBox>
+                    <Label Content="Savemode" HorizontalAlignment="Left" Margin="209,0,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="TbSaveMode" HorizontalAlignment="Left" Height="18" Margin="282,4,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="126" IsEnabled="False"/>
+                    <GroupBox Header="Items" HorizontalAlignment="Left" Margin="209,130,0,0" VerticalAlignment="Top" Height="148" Width="204">
+                        <Canvas Margin="0">
+                            <Button x:Name="BAddItems" Content="Add items" HorizontalAlignment="Left" VerticalAlignment="Top" Width="93" Canvas.Top="110" Click="BAddItems_Click"/>
+                            <Button x:Name="BRemoveItems" Content="Remove items" HorizontalAlignment="Right" VerticalAlignment="Top" Width="93" Canvas.Top="110" Canvas.Left="99" Click="BRemoveItems_Click"/>
+                            <ListBox x:Name="LbItems" HorizontalAlignment="Left" Height="105" VerticalAlignment="Top" Width="192">
+                                <ListBox.ItemsSource>
+                                    <Binding Source="{StaticResource ressource}"/>
+                                </ListBox.ItemsSource>
+                            </ListBox>
+
+                        </Canvas>
+                    </GroupBox>
+                    <Button x:Name="BSave" Content="Save" HorizontalAlignment="Left" Margin="0,279,0,0" VerticalAlignment="Top" Width="75" FontSize="14.667" Click="BSave_Click"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Settings">
+                <Grid Background="#FFE5E5E5" Margin="0">
+                    <GroupBox Header="Default import" HorizontalAlignment="Left" VerticalAlignment="Top" Height="103" Width="204">
+                        <Canvas Margin="0">
+                            <ListBox x:Name="LbDefaultImport" Height="82" VerticalAlignment="Top" HorizontalAlignment="Left" Width="192">
+                                <CheckBox Name="ChBdImportProject" Content="Project" VerticalAlignment="Center"/>
+                                <CheckBox Name="ChBdImportAssem" Content="Assembly" VerticalAlignment="Center"/>
+                                <CheckBox Name="ChBdImportDesc" Content="Description" VerticalAlignment="Center"/>
+                                <CheckBox Name="ChBdImportRev" Content="Revision" VerticalAlignment="Center"/>
+                            </ListBox>
+                        </Canvas>
+                    </GroupBox>
+                    <GroupBox Header="Default saving" HorizontalAlignment="Left" VerticalAlignment="Top" Height="103" Width="204" Margin="0,108,0,0">
+                        <Canvas Margin="0">
+                            <ListBox Height="82" VerticalAlignment="Top" HorizontalAlignment="Left" Width="192">
+                                <CheckBox Name="ChBdSaveProject" Content="Project" VerticalAlignment="Center"/>
+                                <CheckBox Name="ChBdSaveAssem" Content="Assembly" VerticalAlignment="Center"/>
+                                <CheckBox Name="ChBdSaveDesc" Content="Description" VerticalAlignment="Center"/>
+                                <CheckBox Name="ChBdSaveRev" Content="Revision" VerticalAlignment="Center"/>
+                            </ListBox>
+                        </Canvas>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
