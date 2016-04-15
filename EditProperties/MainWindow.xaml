@@ -36,10 +36,10 @@
                     <GroupBox Header="Import" HorizontalAlignment="Left" Margin="0,130,0,0" VerticalAlignment="Top" Height="148" Width="204">
                         <Canvas Margin="0">
                             <ListBox x:Name="LbImport" Height="82" VerticalAlignment="Top" HorizontalAlignment="Left" Width="194">
-                                <CheckBox Name="ChBImportProject" Content="Project" VerticalAlignment="Center"/>
-                                <CheckBox Name="ChBImportAssem" Content="Assembly" VerticalAlignment="Center"/>
-                                <CheckBox Name="ChBImportDesc" Content="Description" VerticalAlignment="Center"/>
-                                <CheckBox Name="ChBImportRev" Content="Revision" VerticalAlignment="Center"/>
+                                <CheckBox x:Name="ChBImportProject" Content="Project" VerticalAlignment="Center"/>
+                                <CheckBox x:Name="ChBImportAssem" Content="Assembly" VerticalAlignment="Center"/>
+                                <CheckBox x:Name="ChBImportDesc" Content="Description" VerticalAlignment="Center"/>
+                                <CheckBox x:Name="ChBImportRev" Content="Revision" VerticalAlignment="Center"/>
                             </ListBox>
                             <Button x:Name="BImportCat" Content="Import from CATIA" HorizontalAlignment="Left" VerticalAlignment="Top" Width="194" Canvas.Top="87" Click="BImportCat_Click"/>
                             <Button x:Name="BImportFile" Content="Import from file" HorizontalAlignment="Left" VerticalAlignment="Top" Width="194" Canvas.Top="109" Click="BImportFile_Click"/>
@@ -48,10 +48,10 @@
                     <GroupBox Header="Saving" HorizontalAlignment="Left" Margin="209,27,0,0" VerticalAlignment="Top" Height="103" Width="204">
                         <Canvas Margin="0">
                             <ListBox Height="82" VerticalAlignment="Top" HorizontalAlignment="Left" Width="192">
-                                <CheckBox Name="ChBSaveProject" Content="Project" VerticalAlignment="Center"/>
-                                <CheckBox Name="ChBSaveAssem" Content="Assembly" VerticalAlignment="Center"/>
-                                <CheckBox Name="ChBSaveDesc" Content="Description" VerticalAlignment="Center"/>
-                                <CheckBox Name="ChBSaveRev" Content="Revision" VerticalAlignment="Center"/>
+                                <CheckBox x:Name="ChBSaveProject" Content="Project" VerticalAlignment="Center"/>
+                                <CheckBox x:Name="ChBSaveAssem" Content="Assembly" VerticalAlignment="Center"/>
+                                <CheckBox x:Name="ChBSaveDesc" Content="Description" VerticalAlignment="Center"/>
+                                <CheckBox x:Name="ChBSaveRev" Content="Revision" VerticalAlignment="Center"/>
                             </ListBox>
                         </Canvas>
                     </GroupBox>
@@ -77,20 +77,20 @@
                     <GroupBox Header="Default import" HorizontalAlignment="Left" VerticalAlignment="Top" Height="103" Width="204">
                         <Canvas Margin="0">
                             <ListBox x:Name="LbDefaultImport" Height="82" VerticalAlignment="Top" HorizontalAlignment="Left" Width="192">
-                                <CheckBox Name="ChBdImportProject" Content="Project" VerticalAlignment="Center"/>
-                                <CheckBox Name="ChBdImportAssem" Content="Assembly" VerticalAlignment="Center"/>
-                                <CheckBox Name="ChBdImportDesc" Content="Description" VerticalAlignment="Center"/>
-                                <CheckBox Name="ChBdImportRev" Content="Revision" VerticalAlignment="Center"/>
+                                <CheckBox x:Name="ChBdImportProject" Content="Project" VerticalAlignment="Center"/>
+                                <CheckBox x:Name="ChBdImportAssem" Content="Assembly" VerticalAlignment="Center"/>
+                                <CheckBox x:Name="ChBdImportDesc" Content="Description" VerticalAlignment="Center"/>
+                                <CheckBox x:Name="ChBdImportRev" Content="Revision" VerticalAlignment="Center"/>
                             </ListBox>
                         </Canvas>
                     </GroupBox>
                     <GroupBox Header="Default saving" HorizontalAlignment="Left" VerticalAlignment="Top" Height="103" Width="204" Margin="0,108,0,0">
                         <Canvas Margin="0">
                             <ListBox Height="82" VerticalAlignment="Top" HorizontalAlignment="Left" Width="192">
-                                <CheckBox Name="ChBdSaveProject" Content="Project" VerticalAlignment="Center"/>
-                                <CheckBox Name="ChBdSaveAssem" Content="Assembly" VerticalAlignment="Center"/>
-                                <CheckBox Name="ChBdSaveDesc" Content="Description" VerticalAlignment="Center"/>
-                                <CheckBox Name="ChBdSaveRev" Content="Revision" VerticalAlignment="Center"/>
+                                <CheckBox x:Name="ChBdSaveProject" Content="Project" VerticalAlignment="Center"/>
+                                <CheckBox x:Name="ChBdSaveAssem" Content="Assembly" VerticalAlignment="Center"/>
+                                <CheckBox x:Name="ChBdSaveDesc" Content="Description" VerticalAlignment="Center"/>
+                                <CheckBox x:Name="ChBdSaveRev" Content="Revision" VerticalAlignment="Center"/>
                             </ListBox>
                         </Canvas>
                     </GroupBox>

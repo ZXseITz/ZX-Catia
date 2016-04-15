@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Serialization;
 using CATmain;
 using INFITF;
 using MECMOD;
@@ -32,8 +34,13 @@ namespace EditProperties
     {
         private static string title = "Edit prperties";
         private CATB catia;
-        private static string filePath = Directory.GetCurrentDirectory() + "\\" + title + "Settings.conf";
+        private static string filePath = Directory.GetCurrentDirectory() + "\\" + title + "Settings.txt";
         private PropertiesProductCollection list;
+        private string[] saveModi = {
+            "undefined",
+            "single savemode",
+            "multi savemode"
+        };
 
         public MainWindow()
         {
@@ -48,10 +55,11 @@ namespace EditProperties
                 string[] filter = { CATB.filterPart, CATB.filterProd };
                 catia = new CATB(filter);
                 list = FindResource("ressource") as PropertiesProductCollection;
+                list.CollectionChanged += new NotifyCollectionChangedEventHandler(list_CollectionChanged);
                 //load settings
                 if (File.Exists(filePath))
                 {
-                    Regex regex = new Regex(".*=.*");
+                    Regex regex = new Regex(".*=([Tt]rue|[Ff]alse)");
                     using (StreamReader sr = new StreamReader(filePath))
                     {
                         while (sr.EndOfStream)
@@ -65,6 +73,28 @@ namespace EditProperties
                                     switch (setStrings[0])
                                     {
                                         case "DefaultImportProduct":
+                                            ChBdImportProject.IsChecked = Convert.ToBoolean(setStrings[1]);
+                                            break;
+                                        case "DefaultImportAssembly":
+                                            ChBdImportProject.IsChecked = Convert.ToBoolean(setStrings[1]);
+                                            break;
+                                        case "DefaultImportDescription":
+                                            ChBdImportProject.IsChecked = Convert.ToBoolean(setStrings[1]);
+                                            break;
+                                        case "DefaultImportRevision":
+                                            ChBdImportProject.IsChecked = Convert.ToBoolean(setStrings[1]);
+                                            break;
+
+                                        case "DefaultSaveProduct":
+                                            ChBdImportProject.IsChecked = Convert.ToBoolean(setStrings[1]);
+                                            break;
+                                        case "DefaultSaveAssembly":
+                                            ChBdImportProject.IsChecked = Convert.ToBoolean(setStrings[1]);
+                                            break;
+                                        case "DefaultSaveDescription":
+                                            ChBdImportProject.IsChecked = Convert.ToBoolean(setStrings[1]);
+                                            break;
+                                        case "DefaultSaveRevision":
                                             ChBdImportProject.IsChecked = Convert.ToBoolean(setStrings[1]);
                                             break;
                                     }
@@ -82,7 +112,7 @@ namespace EditProperties
                     loadDefaultSettings();
                 }
                 //Copy settings
-
+                copySettings();
                 //initialize text
                 Selection sel = catia.getSelection();
                 Product firstProduct;
@@ -121,6 +151,7 @@ namespace EditProperties
             {
                 MessageBox.Show(ice.Message, title, MessageBoxButton.OK, MessageBoxImage.Warning);
                 loadDefaultSettings();
+                copySettings();
             }
             catch (Exception ex)
             {
@@ -140,6 +171,19 @@ namespace EditProperties
             ChBdSaveAssem.IsChecked = true;
             ChBdSaveDesc.IsChecked = true;
             ChBdSaveRev.IsChecked = true;
+        }
+
+        private void copySettings()
+        {
+            ChBImportProject.IsChecked = ChBdImportProject.IsChecked;
+            ChBImportAssem.IsChecked = ChBdImportAssem.IsChecked;
+            ChBImportDesc.IsChecked = ChBdImportDesc.IsChecked;
+            ChBImportRev.IsChecked = ChBdImportRev.IsChecked;
+
+            ChBSaveProject.IsChecked = ChBdSaveProject.IsChecked;
+            ChBSaveAssem.IsChecked = ChBdSaveAssem.IsChecked;
+            ChBSaveDesc.IsChecked = ChBdSaveDesc.IsChecked;
+            ChBSaveRev.IsChecked = ChBdSaveRev.IsChecked;
         }
 
         /// <summary>
@@ -179,6 +223,11 @@ namespace EditProperties
             };
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param product="prod"></param>
+        /// <param importFiletr="filterBools"></param>
         private void importProperties(Product prod, bool[] filterBools)
         {
             string[] properties = readProperties(prod);
@@ -227,6 +276,27 @@ namespace EditProperties
         }
 
         /// <summary>
+        /// Changes the savemode if the list has changed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void list_CollectionChanged(object sender, EventArgs e)
+        {
+            if (list.Count == 0)
+            {
+                TbSaveMode.Text = saveModi[0];
+            }
+            else if (list.Count == 1)
+            {
+                TbSaveMode.Text = saveModi[1];
+            }
+            else
+            {
+                TbSaveMode.Text = saveModi[2];
+            }
+        }
+
+        /// <summary>
         /// Checks if the part number matches the public format
         /// </summary>
         /// <param partnumber="partNum"></param>
@@ -237,6 +307,11 @@ namespace EditProperties
             return regex.IsMatch(partNum);
         }
 
+        /// <summary>
+        /// Imports the properties of a part or product, which is loaded in CATIA
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BImportCat_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -263,6 +338,11 @@ namespace EditProperties
             }
         }
 
+        /// <summary>
+        /// Imports the properties of a .CATPart or .CATProduct file
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BImportFile_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -303,6 +383,11 @@ namespace EditProperties
             }
         }
 
+        /// <summary>
+        /// Adds a new Item to the save list
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BAddItems_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -322,6 +407,11 @@ namespace EditProperties
             }
         }
 
+        /// <summary>
+        /// Removes items from the save list
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BRemoveItems_Click(object sender, RoutedEventArgs e)
         {
             try
