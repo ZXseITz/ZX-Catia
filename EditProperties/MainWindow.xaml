@@ -45,7 +45,7 @@
                             <Button x:Name="BImportFile" Content="Import from file" HorizontalAlignment="Left" VerticalAlignment="Top" Width="194" Canvas.Top="109" Click="BImportFile_Click"/>
                         </Canvas>
                     </GroupBox>
-                    <GroupBox Header="Saving" HorizontalAlignment="Left" Margin="209,27,0,0" VerticalAlignment="Top" Height="103" Width="204">
+                    <GroupBox Header="Saving" HorizontalAlignment="Left" Margin="209,27,0,0" VerticalAlignment="Top" Height="101" Width="204">
                         <Canvas Margin="0">
                             <ListBox Height="82" VerticalAlignment="Top" HorizontalAlignment="Left" Width="192">
                                 <CheckBox x:Name="ChBSaveProject" Content="Project" VerticalAlignment="Center"/>

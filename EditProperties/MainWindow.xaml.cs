@@ -34,13 +34,11 @@ namespace EditProperties
     {
         private static string title = "Edit prperties";
         private CATB catia;
-        private static string filePath = Directory.GetCurrentDirectory() + "\\" + title + "Settings.txt";
+        private static readonly string filePath = Directory.GetCurrentDirectory() + "\\" + title + "Settings.txt";
         private PropertiesProductCollection list;
-        private string[] saveModi = {
-            "undefined",
-            "single savemode",
-            "multi savemode"
-        };
+        private const string saveModeUndef = "undefined";
+        private const string saveModeSingle = "single";
+        private const string saveModeMulti = "multi";
 
         public MainWindow()
         {
@@ -109,10 +107,10 @@ namespace EditProperties
                 }
                 else
                 {
-                    loadDefaultSettings();
+                    LoadDefaultSettings();
                 }
                 //Copy settings
-                copySettings();
+                CopySettings();
                 //initialize text
                 Selection sel = catia.getSelection();
                 Product firstProduct;
@@ -126,8 +124,8 @@ namespace EditProperties
                     {
                         firstProduct = ((ProductDocument)catia.getActiveDoc()).Product;
                     }
-                    addToList(firstProduct);
-                    importProperties(firstProduct, new bool[] { true, true, true, true });
+                    AddToList(firstProduct);
+                    ImportProperties(firstProduct, new bool[] { true, true, true, true });
                 }
                 else
                 {
@@ -136,13 +134,13 @@ namespace EditProperties
                     {
                         if (sel.Item2(i).Value is Part || sel.Item2(i).Value is Product)
                         {
-                            firstProduct = convertToProduct((AnyObject)sel.Item2(i).Value);
+                            firstProduct = ConvertToProduct((AnyObject)sel.Item2(i).Value);
                             if (flag)
                             {
-                                importProperties(firstProduct, new bool[] { true, true, true, true });
+                                ImportProperties(firstProduct, new bool[] { true, true, true, true });
                                 flag = false;
                             }
-                            addToList(firstProduct);
+                            AddToList(firstProduct);
                         }
                     }
                 }
@@ -150,8 +148,8 @@ namespace EditProperties
             catch (InvalidCastException ice)
             {
                 MessageBox.Show(ice.Message, title, MessageBoxButton.OK, MessageBoxImage.Warning);
-                loadDefaultSettings();
-                copySettings();
+                LoadDefaultSettings();
+                CopySettings();
             }
             catch (Exception ex)
             {
@@ -160,7 +158,7 @@ namespace EditProperties
             }
         }
 
-        private void loadDefaultSettings()
+        private void LoadDefaultSettings()
         {
             ChBdImportProject.IsChecked = true;
             ChBdImportAssem.IsChecked = true;
@@ -173,7 +171,10 @@ namespace EditProperties
             ChBdSaveRev.IsChecked = true;
         }
 
-        private void copySettings()
+        /// <summary>
+        /// Copies the default setting to the normal settings
+        /// </summary>
+        private void CopySettings()
         {
             ChBImportProject.IsChecked = ChBdImportProject.IsChecked;
             ChBImportAssem.IsChecked = ChBdImportAssem.IsChecked;
@@ -191,7 +192,7 @@ namespace EditProperties
         /// </summary>
         /// <param partOrProduct="obj"></param>
         /// <returns>product</returns>
-        private Product convertToProduct(AnyObject obj)
+        private static Product ConvertToProduct(AnyObject obj)
         {
             if (obj is Part)
             {
@@ -203,7 +204,11 @@ namespace EditProperties
             }
         }
 
-        private void addToList(Product product)
+        /// <summary>
+        /// Adds a product to list, like set
+        /// </summary>
+        /// <param product="product"></param>
+        private void AddToList(Product product)
         {
             if (list.All(p => p.product != product))
             {
@@ -211,7 +216,12 @@ namespace EditProperties
             }
         }
 
-        private string[] readProperties(Product prod)
+        /// <summary>
+        /// Reads the properties of a product
+        /// </summary>
+        /// <param product="prod"></param>
+        /// <returns>properties</returns>
+        private static string[] ReadProperties(Product prod)
         {
             return new string[]
             {
@@ -224,15 +234,15 @@ namespace EditProperties
         }
 
         /// <summary>
-        /// 
+        /// Imports each property, which is accepted by the filter
         /// </summary>
         /// <param product="prod"></param>
-        /// <param importFiletr="filterBools"></param>
-        private void importProperties(Product prod, bool[] filterBools)
+        /// <param name="importFilter"></param>
+        private void ImportProperties(Product prod, bool[] importFilter)
         {
-            string[] properties = readProperties(prod);
+            string[] properties = ReadProperties(prod);
             //part number
-            if (!checkPartNum(properties[0]))
+            if (!CheckPartNum(properties[0]))
             {
                 TbPartNum.Text = properties[0];
             }
@@ -240,9 +250,9 @@ namespace EditProperties
             {
                 string[] pNums = properties[0].Split('.');
                 string[] newPNums = new string[3];
-                for (int i = 0; i < filterBools.Length - 1; i++)
+                for (int i = 0; i < importFilter.Length - 1; i++)
                 {
-                    if (filterBools[i])
+                    if (importFilter[i])
                     {
                         newPNums[i] = pNums[i];
                     }
@@ -254,22 +264,22 @@ namespace EditProperties
                 TbPartNum.Text = string.Join(".", newPNums);
             }
             //project
-            if (filterBools[0])
+            if (importFilter[0])
             {
                 TbProject.Text = properties[1];
             }
             //assembly
-            if (filterBools[1])
+            if (importFilter[1])
             {
                 TbAssem.Text = properties[2];
             }
             //description
-            if (filterBools[2])
+            if (importFilter[2])
             {
                 TbDesc.Text = properties[3];
             }
             //revision
-            if (filterBools[3])
+            if (importFilter[3])
             {
                 CbRev.Text = properties[4];
             }
@@ -284,24 +294,38 @@ namespace EditProperties
         {
             if (list.Count == 0)
             {
-                TbSaveMode.Text = saveModi[0];
+                TbSaveMode.Text = saveModeUndef;
+                ChBSaveDesc.IsEnabled = true;
             }
             else if (list.Count == 1)
             {
-                TbSaveMode.Text = saveModi[1];
+                TbSaveMode.Text = saveModeSingle;
+                ChBSaveDesc.IsEnabled = true;
             }
             else
             {
-                TbSaveMode.Text = saveModi[2];
+                TbSaveMode.Text = saveModeMulti;
+                ChBSaveDesc.IsEnabled = false;
             }
+        }
+
+        private bool[] getImportFilter()
+        {
+            return new bool[]
+            {
+                ChBImportProject.IsChecked.Value,
+                ChBImportAssem.IsChecked.Value,
+                ChBImportDesc.IsChecked.Value,
+                ChBImportRev.IsChecked.Value,
+            };
         }
 
         /// <summary>
         /// Checks if the part number matches the public format
         /// </summary>
         /// <param partnumber="partNum"></param>
-        /// <returns> match </returns>
-        private bool checkPartNum(String partNum)
+        /// <returns>match</returns>
+        public static bool CheckPartNum(String partNum)
         {
             Regex regex = new Regex("\\d{3}" + Regex.Escape(".") + "\\d{3}" + Regex.Escape(".") + "\\d{4}");
             return regex.IsMatch(partNum);
@@ -322,13 +346,7 @@ namespace EditProperties
                 sel.SelectElement2(selFilter, "Select part or product", false);
                 if (sel.Count2 > 0)
                 {
-                    importProperties(convertToProduct((AnyObject)sel.Item2(1).Value), new bool[]
-                    {
-                        ChBImportProject.IsChecked.Value,
-                        ChBImportAssem.IsChecked.Value,
-                        ChBImportDesc.IsChecked.Value,
-                        ChBImportRev.IsChecked.Value,
-                    });
+                    ImportProperties(ConvertToProduct((AnyObject)sel.Item2(1).Value), getImportFilter());
                 }
                 sel.Clear();
             }
@@ -369,13 +387,7 @@ namespace EditProperties
                 {
                     prod = ((ProductDocument)doc).Product;
                 }
-                importProperties(prod, new bool[]
-                    {
-                        ChBImportProject.IsChecked.Value,
-                        ChBImportAssem.IsChecked.Value,
-                        ChBImportDesc.IsChecked.Value,
-                        ChBImportRev.IsChecked.Value,
-                    });
+                ImportProperties(prod, getImportFilter());
             }
             catch (Exception ex)
             {
@@ -398,7 +410,7 @@ namespace EditProperties
                 sel.SelectElement3(selFilter, "Select part or product", false, CATMultiSelectionMode.CATMultiSelTriggWhenSelPerf, true);
                 for (int i = 1; i <= sel.Count2; i++)
                 {
-                    addToList(convertToProduct((AnyObject)sel.Item2(i).Value));
+                    AddToList(ConvertToProduct((AnyObject)sel.Item2(i).Value));
                 }
             }
             catch (Exception ex)
@@ -429,17 +441,50 @@ namespace EditProperties
             }
         }
 
+        /// <summary>
+        /// Saves the specified propeties in each product in the save list
+        /// No specified description and item number can be saved in the multi savemode
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BSave_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-
+                switch (TbSaveMode.Text)
+                {
+                    case saveModeSingle:
+                        list[0].writeProperties(ReadSpecifiedProperties(), getSaveFilter(), true);
+                        break;
+                    case saveModeMulti:
+                        foreach (PropertiesProduct prod in list)
+                        {
+                            prod.writeProperties(ReadSpecifiedProperties(), getSaveFilter(), false);
+                        }
+                        break;
+                }
+                Environment.Exit(0);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                MessageBox.Show(ex.Message, title, MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+        
+        private string[] ReadSpecifiedProperties()
+        {
+            return new string[] { TbPartNum.Text, TbProject.Text, TbAssem.Text, TbDesc.Text, CbRev.Text };
+        }
+        
+        private bool[] getSaveFilter()
+        {
+            return new bool[]
+            {
+                ChBSaveProject.IsChecked.Value,
+                ChBSaveAssem.IsChecked.Value,
+                ChBSaveDesc.IsChecked.Value,
+                ChBSaveRev.IsChecked.Value
+            };
         }
     }
 }
