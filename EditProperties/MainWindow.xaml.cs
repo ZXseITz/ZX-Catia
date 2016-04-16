@@ -60,7 +60,7 @@ namespace EditProperties
                     Regex regex = new Regex(".*=([Tt]rue|[Ff]alse)");
                     using (StreamReader sr = new StreamReader(filePath))
                     {
-                        while (sr.EndOfStream)
+                        while (!sr.EndOfStream)
                         {
                             string line = sr.ReadLine();
                             if (line != null && regex.IsMatch(line))
@@ -74,26 +74,26 @@ namespace EditProperties
                                             ChBdImportProject.IsChecked = Convert.ToBoolean(setStrings[1]);
                                             break;
                                         case "DefaultImportAssembly":
-                                            ChBdImportProject.IsChecked = Convert.ToBoolean(setStrings[1]);
+                                            ChBdImportAssem.IsChecked = Convert.ToBoolean(setStrings[1]);
                                             break;
                                         case "DefaultImportDescription":
-                                            ChBdImportProject.IsChecked = Convert.ToBoolean(setStrings[1]);
+                                            ChBdImportDesc.IsChecked = Convert.ToBoolean(setStrings[1]);
                                             break;
                                         case "DefaultImportRevision":
-                                            ChBdImportProject.IsChecked = Convert.ToBoolean(setStrings[1]);
+                                            ChBImportRev.IsChecked = Convert.ToBoolean(setStrings[1]);
                                             break;
 
                                         case "DefaultSaveProduct":
-                                            ChBdImportProject.IsChecked = Convert.ToBoolean(setStrings[1]);
+                                            ChBdSaveProject.IsChecked = Convert.ToBoolean(setStrings[1]);
                                             break;
                                         case "DefaultSaveAssembly":
-                                            ChBdImportProject.IsChecked = Convert.ToBoolean(setStrings[1]);
+                                            ChBdSaveAssem.IsChecked = Convert.ToBoolean(setStrings[1]);
                                             break;
                                         case "DefaultSaveDescription":
-                                            ChBdImportProject.IsChecked = Convert.ToBoolean(setStrings[1]);
+                                            ChBdSaveDesc.IsChecked = Convert.ToBoolean(setStrings[1]);
                                             break;
                                         case "DefaultSaveRevision":
-                                            ChBdImportProject.IsChecked = Convert.ToBoolean(setStrings[1]);
+                                            ChBdSaveRev.IsChecked = Convert.ToBoolean(setStrings[1]);
                                             break;
                                     }
                                 }
@@ -485,6 +485,34 @@ namespace EditProperties
                 ChBSaveDesc.IsChecked.Value,
                 ChBSaveRev.IsChecked.Value
             };
+        }
+
+        private void saveDefaultSettings_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (!File.Exists(filePath))
+                {
+                    var settings = File.Create(filePath);
+                    settings.Close();
+                }
+                using (StreamWriter sw = new StreamWriter(filePath))
+                {
+                    sw.WriteLine("DefaultImportProduct=" + ChBdImportProject.IsChecked);
+                    sw.WriteLine("DefaultImportAssembly=" + ChBdImportAssem.IsChecked);
+                    sw.WriteLine("DefaultImportDescription=" + ChBdImportDesc.IsChecked);
+                    sw.WriteLine("DefaultImportRevision=" + ChBdImportRev.IsChecked);
+
+                    sw.WriteLine("DefaultSaveProduct=" + ChBdSaveProject.IsChecked);
+                    sw.WriteLine("DefaultSaveAssembly=" + ChBdSaveAssem.IsChecked);
+                    sw.WriteLine("DefaultSaveDescription=" + ChBdSaveDesc.IsChecked);
+                    sw.WriteLine("DefaultSaveRevision=" + ChBdSaveRev.IsChecked);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, title, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

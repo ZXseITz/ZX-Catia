@@ -94,6 +94,7 @@
                             </ListBox>
                         </Canvas>
                     </GroupBox>
+                    <Button x:Name="saveDefaultSettings" Content="Save settings" HorizontalAlignment="Left" Margin="0,216,0,0" VerticalAlignment="Top" Width="102" Click="saveDefaultSettings_Click"/>
                 </Grid>
             </TabItem>
         </TabControl>
