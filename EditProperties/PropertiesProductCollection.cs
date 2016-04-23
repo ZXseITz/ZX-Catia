@@ -10,6 +10,6 @@ namespace EditProperties
 {
     class PropertiesProductCollection : ObservableCollection<PropertiesProduct>
     {
-       
+       //
     }
 }

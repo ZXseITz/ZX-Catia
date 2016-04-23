@@ -23,9 +23,9 @@ namespace EditProperties
 
         /// <summary>
         /// single mode: Writes the specified propeties into the product attribute
-        /// multi mode: Writes the specified properties, without description into the product attrubute
+        /// multi mode: Writes the specified properties, without Description into the product attrubute
         /// multi mode: specified part number and product attribute part number with legal format are merged
-        /// multi mode: specified part number, project & assembly filter and product attribute part number, which ends with [#0000, #9999] are merged too
+        /// multi mode: specified part number, Project & Assembly filter and product attribute part number, which ends with [#0000, #9999] are merged too
         /// </summary>
         /// <param specified properties="propertyStrings"></param>
         /// <param name="saveFilter"></param>
@@ -42,7 +42,7 @@ namespace EditProperties
                 string currentPartNum = product.get_PartNumber();
                 if (MainWindow.CheckPartNum(currentPartNum) && MainWindow.CheckPartNum(propertyStrings[0]))
                 {
-                    //overwtrite project number and/or assembly number if possible and take current item number
+                    //overwtrite Project number and/or Assembly number if possible and take current item number
                     string[] currentNums = currentPartNum.Split('.');
                     string[] nums = propertyStrings[0].Split('.');
                     if (saveFilter[0])
@@ -58,7 +58,7 @@ namespace EditProperties
                 else if (saveFilter[0] && saveFilter[1] &&
                          implizitChangeNumber.IsMatch(currentPartNum) && MainWindow.CheckPartNum(propertyStrings[0]))
                 {
-                    //new project number, new assembly number and take current temp #number
+                    //new Project number, new Assembly number and take current temp #number
                     string[] nums = propertyStrings[0].Split('.');
                     string[] currentNums = propertyStrings[0].Split('#');
                     nums[2] = currentNums[currentNums.Length - 1];
@@ -83,22 +83,22 @@ namespace EditProperties
         {
             //part number
             product.set_PartNumber(propertyStrings[0]);
-            //project
+            //Project
             if (saveFilter[0])
             {
                 product.set_Definition(propertyStrings[1]);
             }
-            //assembly
+            //Assembly
             if (saveFilter[1])
             {
                 product.set_Nomenclature(propertyStrings[2]);
             }
-            //description
+            //Description
             if (saveFilter[2])
             {
                 product.set_DescriptionRef(propertyStrings[3]);
             }
-            //revision
+            //Revision
             if (saveFilter[3])
             {
                 product.set_Revision(propertyStrings[4]);

@@ -34,12 +34,8 @@ namespace EditProperties
     {
         private static string title = "Edit prperties";
         private CATB catia;
+        private PresentationModel model;
         private static readonly string filePath = Directory.GetCurrentDirectory() + "\\" + title + "Settings.txt";
-        private PropertiesProductCollection list;
-        private const string saveModeUndef = "undefined";
-        private const string saveModeSingle = "single";
-        private const string saveModeMulti = "multi";
-
         public MainWindow()
         {
             InitializeComponent();
@@ -52,8 +48,8 @@ namespace EditProperties
             {
                 string[] filter = { CATB.filterPart, CATB.filterProd };
                 catia = new CATB(filter);
-                list = FindResource("ressource") as PropertiesProductCollection;
-                list.CollectionChanged += new NotifyCollectionChangedEventHandler(list_CollectionChanged);
+                model = initModel();
+                model.List.CollectionChanged += new NotifyCollectionChangedEventHandler(list_CollectionChanged);
                 //load settings
                 if (File.Exists(filePath))
                 {
@@ -70,30 +66,30 @@ namespace EditProperties
                                 {
                                     switch (setStrings[0])
                                     {
-                                        case "DefaultImportProduct":
-                                            ChBdImportProject.IsChecked = Convert.ToBoolean(setStrings[1]);
+                                        case "DefaultImportProject":
+                                            model.DefaultImportFilter.Project = Convert.ToBoolean(setStrings[1]);
                                             break;
                                         case "DefaultImportAssembly":
-                                            ChBdImportAssem.IsChecked = Convert.ToBoolean(setStrings[1]);
+                                            model.DefaultImportFilter.Assembly = Convert.ToBoolean(setStrings[1]);
                                             break;
                                         case "DefaultImportDescription":
-                                            ChBdImportDesc.IsChecked = Convert.ToBoolean(setStrings[1]);
+                                            model.DefaultImportFilter.Description = Convert.ToBoolean(setStrings[1]);
                                             break;
                                         case "DefaultImportRevision":
-                                            ChBImportRev.IsChecked = Convert.ToBoolean(setStrings[1]);
+                                            model.DefaultImportFilter.Revision = Convert.ToBoolean(setStrings[1]);
                                             break;
 
-                                        case "DefaultSaveProduct":
-                                            ChBdSaveProject.IsChecked = Convert.ToBoolean(setStrings[1]);
+                                        case "DefaultSaveProject":
+                                            model.DefaultSaveFilter.Project = Convert.ToBoolean(setStrings[1]);
                                             break;
                                         case "DefaultSaveAssembly":
-                                            ChBdSaveAssem.IsChecked = Convert.ToBoolean(setStrings[1]);
+                                            model.DefaultSaveFilter.Assembly = Convert.ToBoolean(setStrings[1]);
                                             break;
                                         case "DefaultSaveDescription":
-                                            ChBdSaveDesc.IsChecked = Convert.ToBoolean(setStrings[1]);
+                                            model.DefaultSaveFilter.Description = Convert.ToBoolean(setStrings[1]);
                                             break;
                                         case "DefaultSaveRevision":
-                                            ChBdSaveRev.IsChecked = Convert.ToBoolean(setStrings[1]);
+                                            model.DefaultSaveFilter.Revision = Convert.ToBoolean(setStrings[1]);
                                             break;
                                     }
                                 }
@@ -158,17 +154,24 @@ namespace EditProperties
             }
         }
 
+        private PresentationModel initModel()
+        {
+            PresentationModel model = FindResource("Model") as PresentationModel;
+            model.NewProperties = FindResource("NewProperties") as NewPropertiesModel;
+            model.ImportFilter = FindResource("Import") as FilterModel;
+            model.SaveFilter = FindResource("Save") as FilterModel;
+            model.DefaultImportFilter = FindResource("DefaultImport") as FilterModel;
+            model.DefaultSaveFilter = FindResource("DefaultSave") as FilterModel;
+            model.List = FindResource("List") as PropertiesProductCollection;
+            model.Savemode = PresentationModel.Savemodi.SaveModeUndef;
+            model.EnableDescription = true;
+            return model;
+        }
+
         private void LoadDefaultSettings()
         {
-            ChBdImportProject.IsChecked = true;
-            ChBdImportAssem.IsChecked = true;
-            ChBdImportDesc.IsChecked = true;
-            ChBdImportRev.IsChecked = false;
-
-            ChBdSaveProject.IsChecked = true;
-            ChBdSaveAssem.IsChecked = true;
-            ChBdSaveDesc.IsChecked = true;
-            ChBdSaveRev.IsChecked = true;
+            model.DefaultImportFilter.SetFilter(true, true, true, false);
+            model.DefaultSaveFilter.SetFilter(true, true, true, true);
         }
 
         /// <summary>
@@ -176,15 +179,8 @@ namespace EditProperties
         /// </summary>
         private void CopySettings()
         {
-            ChBImportProject.IsChecked = ChBdImportProject.IsChecked;
-            ChBImportAssem.IsChecked = ChBdImportAssem.IsChecked;
-            ChBImportDesc.IsChecked = ChBdImportDesc.IsChecked;
-            ChBImportRev.IsChecked = ChBdImportRev.IsChecked;
-
-            ChBSaveProject.IsChecked = ChBdSaveProject.IsChecked;
-            ChBSaveAssem.IsChecked = ChBdSaveAssem.IsChecked;
-            ChBSaveDesc.IsChecked = ChBdSaveDesc.IsChecked;
-            ChBSaveRev.IsChecked = ChBdSaveRev.IsChecked;
+            model.DefaultImportFilter.CopyTo(model.ImportFilter);
+            model.DefaultSaveFilter.CopyTo(model.SaveFilter);
         }
 
         /// <summary>
@@ -205,14 +201,14 @@ namespace EditProperties
         }
 
         /// <summary>
-        /// Adds a product to list, like set
+        /// Adds a product to List, like set
         /// </summary>
         /// <param product="product"></param>
         private void AddToList(Product product)
         {
-            if (list.All(p => p.product != product))
+            if (model.List.All(p => p.product != product))
             {
-                list.Add(new PropertiesProduct(product));
+                model.List.Add(new PropertiesProduct(product));
             }
         }
 
@@ -244,7 +240,7 @@ namespace EditProperties
             //part number
             if (!CheckPartNum(properties[0]))
             {
-                TbPartNum.Text = properties[0];
+                model.NewProperties.PartNumber = properties[0];
             }
             else
             {
@@ -261,63 +257,49 @@ namespace EditProperties
                         newPNums[i] = String.Empty;
                     }
                 }
-                TbPartNum.Text = string.Join(".", newPNums);
+                model.NewProperties.PartNumber = string.Join(".", newPNums);
             }
-            //project
+            //Project
             if (importFilter[0])
             {
-                TbProject.Text = properties[1];
+                model.NewProperties.Project = properties[1];
             }
-            //assembly
+            //Assembly
             if (importFilter[1])
             {
-                TbAssem.Text = properties[2];
+                model.NewProperties.Assembly = properties[2];
             }
-            //description
+            //Description
             if (importFilter[2])
             {
-                TbDesc.Text = properties[3];
+                model.NewProperties.Description = properties[3];
             }
-            //revision
+            //Revision
             if (importFilter[3])
             {
-                CbRev.Text = properties[4];
+                model.NewProperties.Revision = properties[4];
             }
         }
 
         /// <summary>
-        /// Changes the savemode if the list has changed
+        /// Changes the Savemode if the List has changed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void list_CollectionChanged(object sender, EventArgs e)
         {
-            if (list.Count == 0)
+            if (model.List.Count == 0)
             {
-                TbSaveMode.Text = saveModeUndef;
-                ChBSaveDesc.IsEnabled = true;
+                model.ChangeSavemode(PresentationModel.Savemodi.SaveModeUndef);
             }
-            else if (list.Count == 1)
+            else if (model.List.Count == 1)
             {
-                TbSaveMode.Text = saveModeSingle;
-                ChBSaveDesc.IsEnabled = true;
+                model.ChangeSavemode(PresentationModel.Savemodi.SaveModeSingle);
             }
             else
             {
-                TbSaveMode.Text = saveModeMulti;
-                ChBSaveDesc.IsEnabled = false;
+                model.ChangeSavemode(PresentationModel.Savemodi.SaveModeMulti);
             }
-        }
-
-        private bool[] getImportFilter()
-        {
-            return new bool[]
-            {
-                ChBImportProject.IsChecked.Value,
-                ChBImportAssem.IsChecked.Value,
-                ChBImportDesc.IsChecked.Value,
-                ChBImportRev.IsChecked.Value,
-            };
         }
 
         /// <summary>
@@ -346,7 +328,7 @@ namespace EditProperties
                 sel.SelectElement2(selFilter, "Select part or product", false);
                 if (sel.Count2 > 0)
                 {
-                    ImportProperties(ConvertToProduct((AnyObject)sel.Item2(1).Value), getImportFilter());
+                    ImportProperties(ConvertToProduct((AnyObject)sel.Item2(1).Value), model.ImportFilter.GetFilter());
                 }
                 sel.Clear();
             }
@@ -387,7 +369,7 @@ namespace EditProperties
                 {
                     prod = ((ProductDocument)doc).Product;
                 }
-                ImportProperties(prod, getImportFilter());
+                ImportProperties(prod, model.ImportFilter.GetFilter());
             }
             catch (Exception ex)
             {
@@ -396,7 +378,7 @@ namespace EditProperties
         }
 
         /// <summary>
-        /// Adds a new Item to the save list
+        /// Adds a new Item to the save List
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -420,7 +402,7 @@ namespace EditProperties
         }
 
         /// <summary>
-        /// Removes items from the save list
+        /// Removes items from the save List
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -432,7 +414,7 @@ namespace EditProperties
                 int[] indices = new int[LbItems.SelectedItems.Count];
                 for (int i = LbItems.SelectedItems.Count - 1; i >= 0; i--)
                 {
-                    list.RemoveAt(LbItems.Items.IndexOf(LbItems.SelectedItems[i]));
+                    model.List.RemoveAt(LbItems.Items.IndexOf(LbItems.SelectedItems[i]));
                 }
             }
             catch (Exception ex)
@@ -442,8 +424,8 @@ namespace EditProperties
         }
 
         /// <summary>
-        /// Saves the specified propeties in each product in the save list
-        /// No specified description and item number can be saved in the multi savemode
+        /// Saves the specified propeties in each product in the save List
+        /// No specified Description and item number can be saved in the multi Savemode
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -451,15 +433,15 @@ namespace EditProperties
         {
             try
             {
-                switch (TbSaveMode.Text)
+                switch (model.Savemode)
                 {
-                    case saveModeSingle:
-                        list[0].writeProperties(ReadSpecifiedProperties(), getSaveFilter(), true);
+                    case PresentationModel.Savemodi.SaveModeSingle:
+                        model.List[0].writeProperties(model.NewProperties.GetProperties(), model.SaveFilter.GetFilter(), true);
                         break;
-                    case saveModeMulti:
-                        foreach (PropertiesProduct prod in list)
+                    case PresentationModel.Savemodi.SaveModeMulti:
+                        foreach (PropertiesProduct prod in model.List)
                         {
-                            prod.writeProperties(ReadSpecifiedProperties(), getSaveFilter(), false);
+                            prod.writeProperties(model.NewProperties.GetProperties(), model.SaveFilter.GetFilter(), false);
                         }
                         break;
                 }
@@ -469,22 +451,6 @@ namespace EditProperties
             {
                 MessageBox.Show(ex.Message, title, MessageBoxButton.OK, MessageBoxImage.Error);
             }
-        }
-        
-        private string[] ReadSpecifiedProperties()
-        {
-            return new string[] { TbPartNum.Text, TbProject.Text, TbAssem.Text, TbDesc.Text, CbRev.Text };
-        }
-        
-        private bool[] getSaveFilter()
-        {
-            return new bool[]
-            {
-                ChBSaveProject.IsChecked.Value,
-                ChBSaveAssem.IsChecked.Value,
-                ChBSaveDesc.IsChecked.Value,
-                ChBSaveRev.IsChecked.Value
-            };
         }
 
         private void saveDefaultSettings_Click(object sender, RoutedEventArgs e)
@@ -498,15 +464,15 @@ namespace EditProperties
                 }
                 using (StreamWriter sw = new StreamWriter(filePath))
                 {
-                    sw.WriteLine("DefaultImportProduct=" + ChBdImportProject.IsChecked);
-                    sw.WriteLine("DefaultImportAssembly=" + ChBdImportAssem.IsChecked);
-                    sw.WriteLine("DefaultImportDescription=" + ChBdImportDesc.IsChecked);
-                    sw.WriteLine("DefaultImportRevision=" + ChBdImportRev.IsChecked);
+                    sw.WriteLine("DefaultImportProject=" + model.DefaultImportFilter.Project);
+                    sw.WriteLine("DefaultImportAssembly=" + model.DefaultImportFilter.Assembly);
+                    sw.WriteLine("DefaultImportDescription=" + model.DefaultImportFilter.Description);
+                    sw.WriteLine("DefaultImportRevision=" + model.DefaultImportFilter.Revision);
 
-                    sw.WriteLine("DefaultSaveProduct=" + ChBdSaveProject.IsChecked);
-                    sw.WriteLine("DefaultSaveAssembly=" + ChBdSaveAssem.IsChecked);
-                    sw.WriteLine("DefaultSaveDescription=" + ChBdSaveDesc.IsChecked);
-                    sw.WriteLine("DefaultSaveRevision=" + ChBdSaveRev.IsChecked);
+                    sw.WriteLine("DefaultSaveProject=" + model.DefaultSaveFilter.Project);
+                    sw.WriteLine("DefaultSaveAssembly=" + model.DefaultSaveFilter.Assembly);
+                    sw.WriteLine("DefaultSaveDescription=" + model.DefaultSaveFilter.Description);
+                    sw.WriteLine("DefaultSaveRevision=" + model.DefaultSaveFilter.Revision);
                 }
             }
             catch (Exception ex)
