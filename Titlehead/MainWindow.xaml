@@ -5,8 +5,64 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Titlehead"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="710" Width="330">
     <Grid>
-        
+        <GroupBox x:Name="groupBox" Header="Data" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Height="152" Width="300">
+            <Grid>
+                <Label x:Name="label" Content="Partnumber" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <Label x:Name="label1" Content="Project" HorizontalAlignment="Left" Margin="0,26,0,0" VerticalAlignment="Top"/>
+                <Label x:Name="label2" Content="Assembly" HorizontalAlignment="Left" Margin="0,52,0,0" VerticalAlignment="Top"/>
+                <Label x:Name="label3" Content="Description" HorizontalAlignment="Left" Margin="0,78,0,0" VerticalAlignment="Top"/>
+                <Label x:Name="label4" Content="Revision" Margin="199,0,35,0" VerticalAlignment="Top"/>
+                <Label x:Name="label5" Content="Material" HorizontalAlignment="Left" Margin="0,104,0,0" VerticalAlignment="Top"/>
+                <TextBox x:Name="textBlock" Margin="81,4,94,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top"/>
+                <TextBox x:Name="textBlock1" Margin="81,30,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top"/>
+                <TextBox x:Name="textBlock2" Margin="81,56,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top"/>
+                <TextBox x:Name="textBlock3" Margin="81,82,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top"/>
+                <TextBox x:Name="textBlock5" Margin="81,108,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top"/>
+                <ComboBox x:Name="comboBox1" Margin="253,3,0,0" VerticalAlignment="Top"/>
+            </Grid>
+        </GroupBox>
+        <GroupBox x:Name="groupBox1" Header="Drawing" Margin="10,157,0,0" VerticalAlignment="Top" Height="222" HorizontalAlignment="Left" Width="300">
+            <Grid>
+                <Label x:Name="label7" Content="Drawed" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <Label x:Name="label8" Content="Checked" HorizontalAlignment="Left" Margin="0,26,0,0" VerticalAlignment="Top"/>
+                <Label x:Name="label9" Content="Released" HorizontalAlignment="Left" Margin="0,52,0,0" VerticalAlignment="Top"/>
+                <GroupBox x:Name="groupBox2" Header="Format" HorizontalAlignment="Left" Margin="0,78,0,0" VerticalAlignment="Top" Height="48" Width="288">
+                    <Grid>
+                        <ComboBox x:Name="comboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60"/>
+                        <CheckBox x:Name="checkBox" Content="Change Sheetformat" HorizontalAlignment="Left" Margin="120,3,0,0" VerticalAlignment="Top"/>
+                    </Grid>
+                </GroupBox>
+                <GroupBox x:Name="Scale" Header="Scale" HorizontalAlignment="Left" Margin="0,126,0,0" VerticalAlignment="Top" Height="48" Width="288">
+                    <Grid>
+                        <ComboBox x:Name="comboBox_Copy" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60"/>
+                        <Label x:Name="label6" Content="Label" HorizontalAlignment="Left" Margin="65,0,0,-4" VerticalAlignment="Top"/>
+                        <ComboBox x:Name="comboBox2" HorizontalAlignment="Left" Margin="103,0,0,0" VerticalAlignment="Top" Width="173"/>
+
+                    </Grid>
+                </GroupBox>
+                <DatePicker HorizontalAlignment="Left" Margin="57,53,0,0" VerticalAlignment="Top" Width="128"/>
+                <DatePicker HorizontalAlignment="Left" Margin="57,27,0,0" VerticalAlignment="Top" Width="128"/>
+                <DatePicker HorizontalAlignment="Left" Margin="57,1,0,0" VerticalAlignment="Top" Width="128"/>
+                <TextBox x:Name="textBox" HorizontalAlignment="Left" Margin="190,4,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="98"/>
+                <TextBox x:Name="textBox_Copy" HorizontalAlignment="Left" Margin="190,30,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="98"/>
+                <TextBox x:Name="textBox_Copy1" HorizontalAlignment="Left" Margin="190,56,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="98"/>
+                <Label x:Name="label10" Content="Sheet" HorizontalAlignment="Left" Margin="0,174,0,0" VerticalAlignment="Top"/>
+                <TextBox x:Name="textBox1" HorizontalAlignment="Left" Margin="57,178,0,0" TextWrapping="Wrap" Text="TextBox g" VerticalAlignment="Top" Width="128"/>
+            </Grid>
+        </GroupBox>
+        <GroupBox x:Name="groupBox3" Header="Partlist" HorizontalAlignment="Left" Margin="10,384,0,0" VerticalAlignment="Top" Height="70" Width="300">
+            <Grid>
+                <ComboBox x:Name="comboBox3" HorizontalAlignment="Left" Width="288" Height="22" VerticalAlignment="Top"/>
+                <Label x:Name="label11" Content="Partnumber" HorizontalAlignment="Left" Margin="0,22,0,0" VerticalAlignment="Top"/>
+                <TextBox x:Name="textBox2" HorizontalAlignment="Left" Margin="78,26,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="210"/>
+            </Grid>
+        </GroupBox>
+        <GroupBox x:Name="groupBox4" Header="Revision" HorizontalAlignment="Left" Margin="10,459,0,0" VerticalAlignment="Top" Height="180" Width="300">
+            <DataGrid x:Name="dataGrid"/>
+        </GroupBox>
+        <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Margin="10,644,0,0" VerticalAlignment="Top" Width="75"/>
+
     </Grid>
 </Window>
