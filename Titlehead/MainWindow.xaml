@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Titlehead"
         mc:Ignorable="d"
-        Title="MainWindow" Height="710" Width="330">
+        Title="MainWindow" Height="710" Width="330" Loaded="MainWindow_Loaded">
     <Window.Resources>
         <local:DataModel x:Key="Data"></local:DataModel>
         <local:DrawingModel x:Key="Drawing"></local:DrawingModel>
@@ -52,19 +52,19 @@
                 <TextBox HorizontalAlignment="Left" Margin="190,56,0,0" TextWrapping="Wrap" Text="{Binding ReleasedName}" VerticalAlignment="Top" Width="98"/>
                 <GroupBox Header="Format" HorizontalAlignment="Left" Margin="0,78,0,0" VerticalAlignment="Top" Height="48" Width="288">
                     <Grid>
-                        <ComboBox Text="{Binding Format}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60">
+                        <ComboBox Text="{Binding Path=Format}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60">
                             <ComboBoxItem Content="A4" HorizontalAlignment="Left" Width="60"/>
                             <ComboBoxItem Content="A3" HorizontalAlignment="Left" Width="60"/>
                             <ComboBoxItem Content="A2" HorizontalAlignment="Left" Width="60"/>
                             <ComboBoxItem Content="A1" HorizontalAlignment="Left" Width="60"/>
                             <ComboBoxItem Content="A0" HorizontalAlignment="Left" Width="60"/>
                         </ComboBox>
-                        <CheckBox IsChecked="{Binding ChangeSheet}" Content="Change Sheetformat" HorizontalAlignment="Left" Margin="120,3,0,0" VerticalAlignment="Top"/>
+                        <CheckBox IsChecked="{Binding Path=ChangeSheet}" Content="Change Sheetformat" HorizontalAlignment="Left" Margin="120,3,0,0" VerticalAlignment="Top"/>
                     </Grid>
                 </GroupBox>
                 <GroupBox Header="Scale" HorizontalAlignment="Left" Margin="0,126,0,0" VerticalAlignment="Top" Height="48" Width="288">
                     <Grid>
-                        <ComboBox Text="{Binding Scale}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60">
+                        <ComboBox Text="{Binding Path=Scale}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60">
                             <ComboBoxItem Content="1:1" HorizontalAlignment="Left" Width="60"/>
                             <ComboBoxItem Content="1:2" HorizontalAlignment="Left" Width="60"/>
                             <ComboBoxItem Content="1:5" HorizontalAlignment="Left" Width="60"/>
@@ -80,7 +80,7 @@
                             <ComboBoxItem Content="100:1" HorizontalAlignment="Left" Width="60"/>
                         </ComboBox>
                         <Label Content="View" HorizontalAlignment="Left" Margin="65,0,0,-4" VerticalAlignment="Top"/>
-                        <ComboBox ItemsSource="{Binding Source={StaticResource Views}}" HorizontalAlignment="Left" Margin="103,0,0,0" VerticalAlignment="Top" Width="173"/>
+                        <ComboBox ItemsSource="{Binding Source={StaticResource Views}}" Text="{Binding Path=View}" HorizontalAlignment="Left" Margin="103,0,0,0" VerticalAlignment="Top" Width="173"/>
                     </Grid>
                 </GroupBox>
                 <Label Content="Sheet" HorizontalAlignment="Left" Margin="0,174,0,0" VerticalAlignment="Top"/>

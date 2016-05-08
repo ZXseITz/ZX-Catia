@@ -11,5 +11,6 @@ namespace Titlehead
         public DataModel Data;
         public DrawingModel Drawing;
         public PartListModel PartList;
+        public ViewCollection Views;
     }
 }

@@ -11,7 +11,7 @@ namespace Titlehead
     class DrawingModel : UserControl
     {
         public static DependencyProperty DrawedDateProperty =
-            DependencyProperty.Register("DrawedDate", typeof(string), typeof(DataModel));
+            DependencyProperty.Register("DrawedDate", typeof(string), typeof(DrawingModel));
         public string DrawedDate
         {
             get { return (string)GetValue(DrawedDateProperty); }
@@ -19,7 +19,7 @@ namespace Titlehead
         }
 
         public static DependencyProperty DrawedNameProperty =
-            DependencyProperty.Register("DrawedName", typeof(string), typeof(DataModel));
+            DependencyProperty.Register("DrawedName", typeof(string), typeof(DrawingModel));
         public string DrawedName
         {
             get { return (string)GetValue(DrawedNameProperty); }
@@ -27,7 +27,7 @@ namespace Titlehead
         }
 
         public static DependencyProperty CheckedDateProperty =
-            DependencyProperty.Register("CheckedDate", typeof(string), typeof(DataModel));
+            DependencyProperty.Register("CheckedDate", typeof(string), typeof(DrawingModel));
         public string CheckedDate
         {
             get { return (string)GetValue(CheckedDateProperty); }
@@ -35,7 +35,7 @@ namespace Titlehead
         }
 
         public static DependencyProperty CheckedNameProperty =
-            DependencyProperty.Register("CheckedName", typeof(string), typeof(DataModel));
+            DependencyProperty.Register("CheckedName", typeof(string), typeof(DrawingModel));
         public string CheckedName
         {
             get { return (string)GetValue(CheckedNameProperty); }
@@ -43,7 +43,7 @@ namespace Titlehead
         }
 
         public static DependencyProperty ReleasedDateProperty =
-            DependencyProperty.Register("ReleasedDate", typeof(string), typeof(DataModel));
+            DependencyProperty.Register("ReleasedDate", typeof(string), typeof(DrawingModel));
         public string ReleasedDate
         {
             get { return (string)GetValue(ReleasedDateProperty); }
@@ -51,7 +51,7 @@ namespace Titlehead
         }
 
         public static DependencyProperty ReleasedNameProperty =
-            DependencyProperty.Register("ReleasedName", typeof(string), typeof(DataModel));
+            DependencyProperty.Register("ReleasedName", typeof(string), typeof(DrawingModel));
         public string ReleasedName
         {
             get { return (string)GetValue(ReleasedNameProperty); }
@@ -59,7 +59,7 @@ namespace Titlehead
         }
 
         public static DependencyProperty FormatProperty =
-            DependencyProperty.Register("Format", typeof(string), typeof(DataModel));
+            DependencyProperty.Register("Format", typeof(string), typeof(DrawingModel));
         public string Format
         {
             get { return (string)GetValue(FormatProperty); }
@@ -67,7 +67,7 @@ namespace Titlehead
         }
 
         public static DependencyProperty ChangeSheetProperty =
-            DependencyProperty.Register("ChangeSheet", typeof(bool), typeof(DataModel));
+            DependencyProperty.Register("ChangeSheet", typeof(bool), typeof(DrawingModel));
         public bool ChangeSheet
         {
             get { return (bool)GetValue(ChangeSheetProperty); }
@@ -75,7 +75,7 @@ namespace Titlehead
         }
 
         public static DependencyProperty ScaleProperty =
-            DependencyProperty.Register("Scale", typeof(string), typeof(DataModel));
+            DependencyProperty.Register("Scale", typeof(string), typeof(DrawingModel));
         public string Scale
         {
             get { return (string)GetValue(ScaleProperty); }
@@ -83,7 +83,7 @@ namespace Titlehead
         }
 
         public static DependencyProperty ViewProperty =
-            DependencyProperty.Register("View", typeof(string), typeof(DataModel));
+            DependencyProperty.Register("View", typeof(string), typeof(DrawingModel));
         public string View
         {
             get { return (string)GetValue(ViewProperty); }
@@ -91,13 +91,11 @@ namespace Titlehead
         }
 
         public static DependencyProperty SheetProperty =
-            DependencyProperty.Register("Sheet", typeof(string), typeof(DataModel));
+            DependencyProperty.Register("Sheet", typeof(string), typeof(DrawingModel));
         public string Sheet
         {
             get { return (string)GetValue(SheetProperty); }
             set { SetValue(SheetProperty, value); }
         }
-
-        public ViewCollection Views;
     }
 }
