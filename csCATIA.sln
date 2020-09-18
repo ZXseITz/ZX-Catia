@@ -1,17 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CATmain", "CATmain\CATmain.csproj", "{DB8843C8-D875-42BE-8A88-CFE2626C57F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CATmat", "CATmat\CATmat.csproj", "{DBBA1695-F6CF-40E6-BCA0-DDBD6FE0D5F4}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CATtypes", "CATtypes\CATtypes.csproj", "{F8F6F86F-E0B8-49B3-BF55-A4CFDA65C2B7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CATgeometry", "CATgeometry\CATgeometry.csproj", "{7BC2BB5B-0206-429C-866C-038581BE16EF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvBgv", "MvBgv\MvBgv.csproj", "{5035AA36-2D4E-4C72-A25D-66AC365688A6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FgBgv", "FgBgv\FgBgv.csproj", "{5035AA36-2D4E-4C72-A25D-66AC365688A6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EditProperties", "EditProperties\EditProperties.csproj", "{DB51EF8E-30D7-41B5-BDDA-9875D12F09A7}"
 EndProject
@@ -29,18 +23,6 @@ Global
 		{DB8843C8-D875-42BE-8A88-CFE2626C57F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB8843C8-D875-42BE-8A88-CFE2626C57F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB8843C8-D875-42BE-8A88-CFE2626C57F4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DBBA1695-F6CF-40E6-BCA0-DDBD6FE0D5F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DBBA1695-F6CF-40E6-BCA0-DDBD6FE0D5F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DBBA1695-F6CF-40E6-BCA0-DDBD6FE0D5F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DBBA1695-F6CF-40E6-BCA0-DDBD6FE0D5F4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F8F6F86F-E0B8-49B3-BF55-A4CFDA65C2B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F8F6F86F-E0B8-49B3-BF55-A4CFDA65C2B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F8F6F86F-E0B8-49B3-BF55-A4CFDA65C2B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F8F6F86F-E0B8-49B3-BF55-A4CFDA65C2B7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7BC2BB5B-0206-429C-866C-038581BE16EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7BC2BB5B-0206-429C-866C-038581BE16EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7BC2BB5B-0206-429C-866C-038581BE16EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7BC2BB5B-0206-429C-866C-038581BE16EF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5035AA36-2D4E-4C72-A25D-66AC365688A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5035AA36-2D4E-4C72-A25D-66AC365688A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5035AA36-2D4E-4C72-A25D-66AC365688A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -60,5 +42,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {556CFE10-D337-4C4E-9B85-D82C8410F98B}
 	EndGlobalSection
 EndGlobal
